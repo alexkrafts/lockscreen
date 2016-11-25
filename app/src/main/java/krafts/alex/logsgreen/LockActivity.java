@@ -6,6 +6,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.service.notification.StatusBarNotification;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -93,6 +94,7 @@ public class LockActivity extends AppCompatActivity {
     }
     static class NotificationsData{
         private static ArrayList<Notification> list;
+        private static NotificationService service;
 
         public static ArrayList<Notification> getList() {
             return list;
@@ -105,6 +107,13 @@ public class LockActivity extends AppCompatActivity {
         public static void removeItem(Notification item){
             if (list!=null && list.contains(item)) {
                 list.remove(item);
+            }
+        }
+
+        public static void setService(NotificationService service) {
+            service = service;
+            for (StatusBarNotification item : service.getActiveNotifications()){
+                addItem(item.getNotification());
             }
         }
     }

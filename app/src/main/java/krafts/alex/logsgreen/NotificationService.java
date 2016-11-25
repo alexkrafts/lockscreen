@@ -2,10 +2,7 @@ package krafts.alex.logsgreen;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Build;
 import android.provider.Settings;
 import android.service.notification.NotificationListenerService;
@@ -16,16 +13,12 @@ public class NotificationService extends NotificationListenerService {
 
     public static final String ACTION = "krafts.alex.NOTIFICATION_LISTENER_EXAMPLE";
     private String TAG = this.getClass().getSimpleName();
-    private NotificationServiceReceiver nlservicereciver;
     private static final int VERSION_SDK_INT = Build.VERSION.SDK_INT;
     @Override
     public void onCreate() {
         super.onCreate();
-        nlservicereciver = new NotificationServiceReceiver();
-        IntentFilter filter = new IntentFilter();
-        filter.addAction("krafts.alex.NOTIFICATION_LISTENER_SERVICE_EXAMPLE");
         Log.d(TAG, "onCreate: SERVICE STARTED");
-        registerReceiver(nlservicereciver,filter);
+        LockActivity.NotificationsData.setService(this);
     }
     @SuppressLint("InlinedApi")
     @TargetApi(19)
@@ -46,7 +39,6 @@ public class NotificationService extends NotificationListenerService {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        unregisterReceiver(nlservicereciver);
     }
 
     @Override
@@ -62,31 +54,5 @@ public class NotificationService extends NotificationListenerService {
     }
 
 
-    class NotificationServiceReceiver extends BroadcastReceiver {
-
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if(intent.getStringExtra("command").equals("clearall")){
-                NotificationService.this.cancelAllNotifications();
-            }
-            else if(intent.getStringExtra("command").equals("list")){
-                Intent i1 = new  Intent(ACTION);
-                i1.putExtra("notification_event","=====================");
-                sendBroadcast(i1);
-                int i=1;
-                for (StatusBarNotification sbn : NotificationService.this.getActiveNotifications()) {
-                    Intent i2 = new  Intent(ACTION);
-                    i2.putExtra("notification_event",i +" " + sbn.getPackageName() + "\n");
-                    sendBroadcast(i2);
-                    i++;
-                }
-                Intent i3 = new  Intent(ACTION);
-                i3.putExtra("notification_event","===== Notification List ====");
-                sendBroadcast(i3);
-
-            }
-
-        }
-    }
 
 }
