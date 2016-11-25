@@ -1,5 +1,6 @@
 package krafts.alex.logsgreen;
 
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -14,6 +15,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+
+import java.util.ArrayList;
 
 public class LockActivity extends AppCompatActivity {
 
@@ -88,5 +91,21 @@ public class LockActivity extends AppCompatActivity {
             Log.d(TAG, "onReceive: "+ temp);
         }
     }
+    static class NotificationsData{
+        private static ArrayList<Notification> list;
 
+        public static ArrayList<Notification> getList() {
+            return list;
+        }
+        public static void addItem(Notification item){
+            if (list==null)
+                list = new ArrayList<>();
+            list.add(item);
+        }
+        public static void removeItem(Notification item){
+            if (list!=null && list.contains(item)) {
+                list.remove(item);
+            }
+        }
+    }
 }

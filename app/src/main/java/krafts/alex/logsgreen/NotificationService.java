@@ -1,17 +1,16 @@
 package krafts.alex.logsgreen;
 
-
-        import android.annotation.SuppressLint;
-        import android.annotation.TargetApi;
-        import android.content.BroadcastReceiver;
-        import android.content.Context;
-        import android.content.Intent;
-        import android.content.IntentFilter;
-        import android.os.Build;
-        import android.provider.Settings;
-        import android.service.notification.NotificationListenerService;
-        import android.service.notification.StatusBarNotification;
-        import android.util.Log;
+import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.os.Build;
+import android.provider.Settings;
+import android.service.notification.NotificationListenerService;
+import android.service.notification.StatusBarNotification;
+import android.util.Log;
 
 public class NotificationService extends NotificationListenerService {
 
@@ -52,24 +51,16 @@ public class NotificationService extends NotificationListenerService {
 
     @Override
     public void onNotificationPosted(StatusBarNotification sbn) {
-
-        Log.i(TAG,"**********  onNotificationPosted");
         Log.i(TAG,"ID :" + sbn.getId() + "\t" + sbn.getNotification().tickerText + "\t" + sbn.getPackageName());
-        Intent i = new Intent(ACTION);
-        i.putExtra("notification_event","onNotificationPosted :" + sbn.getPackageName() + "\n");
-        sendBroadcast(i);
-
+        LockActivity.NotificationsData.addItem(sbn.getNotification());
     }
 
     @Override
     public void onNotificationRemoved(StatusBarNotification sbn) {
-        Log.i(TAG,"********** onNotificationRemoved");
         Log.i(TAG,"ID :" + sbn.getId() + "\t" + sbn.getNotification().tickerText +"\t" + sbn.getPackageName());
-        Intent i = new  Intent(ACTION);
-        i.putExtra("notification_event","onNotificationRemoved :" + sbn.getPackageName() + "\n");
-
-        sendBroadcast(i);
+        LockActivity.NotificationsData.removeItem(sbn.getNotification());
     }
+
 
     class NotificationServiceReceiver extends BroadcastReceiver {
 
