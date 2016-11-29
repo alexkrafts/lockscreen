@@ -18,7 +18,7 @@ public class NotificationService extends NotificationListenerService {
     public void onCreate() {
         super.onCreate();
         Log.d(TAG, "onCreate: SERVICE STARTED");
-        LockActivity.NotificationsData.setService(this);
+        NotificationsData.setService(this);
     }
     @SuppressLint("InlinedApi")
     @TargetApi(19)
@@ -44,13 +44,13 @@ public class NotificationService extends NotificationListenerService {
     @Override
     public void onNotificationPosted(StatusBarNotification sbn) {
         Log.i(TAG,"ID :" + sbn.getId() + "\t" + sbn.getNotification().tickerText + "\t" + sbn.getPackageName());
-        LockActivity.NotificationsData.addItem(sbn.getNotification());
+        NotificationsData.addItem(sbn.getNotification());
     }
 
     @Override
     public void onNotificationRemoved(StatusBarNotification sbn) {
         Log.i(TAG,"ID :" + sbn.getId() + "\t" + sbn.getNotification().tickerText +"\t" + sbn.getPackageName());
-        LockActivity.NotificationsData.removeItem(sbn.getNotification());
+        NotificationsData.removeItem(sbn.getNotification());
     }
 
 
